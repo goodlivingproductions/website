@@ -234,3 +234,23 @@ p {
     scroll-behavior: auto !important;
   }
 }
+
+@media (max-width: 640px) {
+  :root {
+    --page-padding: 1.15rem;
+    --space-lg: 2rem;
+    --space-xl: 3.5rem;
+  }
+
+  h1 {
+    font-size: clamp(2.75rem, 12vw, 4rem);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  h3 {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+}

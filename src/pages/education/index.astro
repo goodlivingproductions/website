@@ -256,20 +256,47 @@ const { Content } = await render(education);
 
   @media (max-width: 600px) {
     .page-header {
-      padding-block: 5rem 4rem;
+      padding-block: 3.5rem 2.75rem;
     }
 
     .lesson-section,
     .booking {
-      padding-block: 5rem;
+      padding-block: 3.5rem;
     }
 
     .lesson-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .lesson {
       min-height: auto;
+      padding: 1rem;
+    }
+
+    .number {
+      margin-bottom: 1.25rem;
+    }
+
+    .lesson h3 {
+      font-size: 1.15rem;
+    }
+
+    .lesson p {
+      font-size: 0.85rem;
+    }
+
+    .section-heading {
+      margin-bottom: 2rem;
+    }
+
+    .booking-placeholder {
+      min-height: 280px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .lesson-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

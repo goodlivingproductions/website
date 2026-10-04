@@ -120,9 +120,10 @@ const currentPath = Astro.url.pathname;
   @media (max-width: 640px) {
     .header-inner {
       min-height: auto;
-      padding-block: 1.25rem;
+      padding-block: 0.9rem 0.75rem;
       align-items: flex-start;
       flex-direction: column;
+      gap: 0.75rem;
     }
 
     nav {
@@ -133,6 +134,16 @@ const currentPath = Astro.url.pathname;
 
     .nav-list {
       width: max-content;
+      gap: 1.25rem;
+    }
+
+    .nav-list a {
+      padding-block: 0.35rem;
+      font-size: 0.72rem;
+    }
+
+    .nav-list a::after {
+      bottom: 0;
     }
   }
 </style>

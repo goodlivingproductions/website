@@ -288,13 +288,28 @@ const productionTeam = team
     }
 
     .portfolio-card {
-      flex-basis: min(100%, 390px);
-      grid-template-columns: 115px minmax(0, 1fr);
-      gap: 1rem;
+      flex-basis: min(100%, 360px);
+      grid-template-columns: clamp(100px, 31vw, 125px) minmax(0, 1fr);
+      gap: 0.75rem;
+      min-height: 120px;
     }
 
     .portfolio-info {
-      padding-right: 0.75rem;
+      padding-block: 0.75rem;
+      padding-right: 0.65rem;
+    }
+
+    .portfolio-info p {
+      font-size: 0.8rem;
+    }
+
+    .team-tags {
+      gap: 0.3rem;
+    }
+
+    .team-tags span {
+      padding: 0.2rem 0.35rem;
+      font-size: 0.65rem;
     }
 
   }

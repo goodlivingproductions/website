@@ -119,7 +119,30 @@ const { Content } = await render(home);
 
   @media (max-width: 640px) {
     .hero-inner {
-      padding-block: 5rem;
+      padding-block: 4rem;
+    }
+
+    .hero {
+      min-height: min(76svh, 680px);
+    }
+
+    .eyebrow {
+      margin-bottom: 1.25rem;
+      font-size: 0.68rem;
+    }
+
+    h1 {
+      margin-bottom: 1.5rem;
+      font-size: clamp(2.85rem, 13vw, 4.25rem);
+      line-height: 0.98;
+    }
+
+    .intro {
+      margin-bottom: 1.75rem;
+    }
+
+    .intro :global(p) {
+      font-size: 1rem;
     }
   }
 </style>
