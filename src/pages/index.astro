@@ -19,14 +19,14 @@ const { Content } = await render(home);
     <div class="container hero-inner">
       <p class="eyebrow">Good Living Productions</p>
 
-      <h1>Music. Production. Performance.</h1>
+      <h1>Good Music, Good Living</h1>
 
       <div class="intro">
         <Content />
       </div>
 
-      <a class="button" href="/work/">
-        Explore Our Work
+      <a class="button" href="/listen/">
+        Listen Now
       </a>
     </div>
   </section>
@@ -34,9 +34,25 @@ const { Content } = await render(home);
 
 <style>
   .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     min-height: min(80vh, 850px);
     display: flex;
     align-items: center;
+  }
+
+  .hero::before {
+    position: absolute;
+    z-index: -1;
+    top: 8%;
+    left: 35%;
+    width: min(70vw, 850px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(116 20 30 / 12%), transparent 68%);
+    content: '';
+    pointer-events: none;
   }
 
   .hero-inner {
@@ -56,6 +72,9 @@ const { Content } = await render(home);
     max-width: 900px;
     margin-bottom: 2.5rem;
     font-weight: 500;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.06em;
   }
 
   .intro {
@@ -79,7 +98,8 @@ const { Content } = await render(home);
     justify-content: center;
     min-height: 3.25rem;
     padding: 0.75rem 1.5rem;
-    border: 1px solid var(--color-text);
+    border: 1px solid var(--color-accent);
+    background: var(--color-accent);
     color: var(--color-text);
     font-size: 0.8rem;
     font-weight: 600;
@@ -87,12 +107,14 @@ const { Content } = await render(home);
     text-transform: uppercase;
     transition:
       background-color 160ms ease,
-      color 160ms ease;
+      color 160ms ease,
+      border-color 160ms ease;
   }
 
   .button:hover {
-    background: var(--color-text);
-    color: var(--color-background);
+    border-color: var(--color-text);
+    background: transparent;
+    color: var(--color-text);
   }
 
   @media (max-width: 640px) {

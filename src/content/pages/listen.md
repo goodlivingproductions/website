@@ -1,5 +1,5 @@
 ---
-title: "Work"
+title: "Listen"
 description: "Selected music, productions, releases, and live projects from Good Living Productions."
 ---
 
@@ -19,4 +19,4 @@ Good Living Productions also works in live performance, including live mixing, p
 
 From initial ideas and arrangements through recording, production, and mixing, we help develop projects from concept to finished music.
 
-More work will be added here as the catalog grows.
+More releases will be added here as the catalog grows.

@@ -1,0 +1,299 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const [team, releases] = await Promise.all([
+    getCollection('team'),
+    getCollection('releases'),
+  ]);
+
+  return team.map((member) => ({
+    params: { slug: member.id },
+    props: {
+      member,
+      projects: releases
+        .filter((release) =>
+          release.data.goodLivingTeam.some((credit) => credit.name === member.data.name),
+        )
+        .sort((a, b) => {
+          const dateA = a.data.releaseDate?.getTime() ?? 0;
+          const dateB = b.data.releaseDate?.getTime() ?? 0;
+          return dateB - dateA;
+        }),
+    },
+  }));
+}
+
+const { member, projects } = Astro.props;
+const roles = [...new Set(
+  projects.flatMap((release) =>
+    release.data.goodLivingTeam
+      .filter((credit) => credit.name === member.data.name)
+      .flatMap((credit) => credit.roles),
+  ),
+)];
+const initials = member.data.name
+  .split(/\s+/)
+  .map((part) => part[0])
+  .slice(0, 2)
+  .join('')
+  .toUpperCase();
+---
+
+<PageLayout
+  title={`${member.data.name} — Production Team`}
+  description={member.data.description ?? `${member.data.name} works with Good Living Productions.`}
+  image={member.data.image}
+>
+  <article class="team-page">
+    <section class="team-profile">
+      <div class="container team-profile-inner">
+        <div class="team-photo">
+          {member.data.image ? (
+            <img src={member.data.image} alt={member.data.name} />
+          ) : (
+            <span>{initials}</span>
+          )}
+        </div>
+
+        <div class="team-intro">
+          <p class="eyebrow">Good Living Production Team</p>
+          <h1>{member.data.name}</h1>
+
+          {member.data.description && (
+            <p class="description">{member.data.description}</p>
+          )}
+
+          {member.data.geniusUrl && (
+            <a class="profile-link" href={member.data.geniusUrl} target="_blank" rel="noopener noreferrer">
+              Genius <span aria-hidden="true">↗</span>
+            </a>
+          )}
+
+          {roles.length > 0 && (
+            <ul class="role-tags" aria-label="Project roles">
+              {roles.map((role) => <li>{role}</li>)}
+            </ul>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <section class="team-projects">
+      <div class="container">
+        <h2>Selected projects</h2>
+
+        {projects.length > 0 ? (
+          <div class="project-grid">
+            {projects.map((release) => {
+              const projectRoles = release.data.goodLivingTeam
+                .filter((credit) => credit.name === member.data.name)
+                .flatMap((credit) => credit.roles);
+
+              return (
+                <a class="project-card" href={`/releases/${release.id}/`}>
+                  <div class="project-cover">
+                    {release.data.cover ? (
+                      <img
+                        src={release.data.cover}
+                        alt={`${release.data.title} cover`}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <span>No Artwork</span>
+                    )}
+                  </div>
+                  <div class="project-info">
+                    <h3>{release.data.title}</h3>
+                    <p>{release.data.artist}</p>
+                    <ul class="role-tags" aria-label="Roles on this project">
+                      {projectRoles.map((role) => <li>{role}</li>)}
+                    </ul>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        ) : (
+          <p class="empty-state">Projects will be added here.</p>
+        )}
+      </div>
+    </section>
+  </article>
+</PageLayout>
+
+<style>
+  .team-profile {
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .team-profile-inner {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .team-photo {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .team-photo span {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    color: var(--color-text-muted);
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+  }
+
+  .eyebrow {
+    margin-bottom: 1rem;
+    color: var(--color-accent);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+  }
+
+  .description {
+    max-width: 620px;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-link {
+    display: inline-flex;
+    gap: 0.35rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text);
+    font-size: 0.9rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .role-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .role-tags li {
+    padding: 0.4rem 0.65rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  .team-projects {
+    padding-block: 3rem 5rem;
+  }
+
+  .team-projects h2 {
+    margin-bottom: 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    display: block;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .project-cover {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--color-background);
+  }
+
+  .project-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 250ms ease;
+  }
+
+  .project-card:hover .project-cover img {
+    transform: scale(1.025);
+  }
+
+  .project-cover span {
+    display: grid;
+    height: 100%;
+    place-items: center;
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .project-info {
+    padding: 1rem;
+  }
+
+  .project-info h3 {
+    margin-bottom: 0.25rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .project-info p {
+    margin-bottom: 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  .empty-state {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 750px) {
+    .team-profile-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .team-photo {
+      max-width: 420px;
+    }
+
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

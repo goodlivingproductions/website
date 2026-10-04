@@ -15,6 +15,20 @@ const artists = defineCollection({
   }),
 });
 
+const team = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/team',
+  }),
+  schema: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    image: z.string().optional(),
+    geniusUrl: z.string().url().optional(),
+    featured: z.boolean().default(false),
+  }),
+});
+
 const releases = defineCollection({
   loader: glob({
     pattern: '**/*.md',
@@ -27,6 +41,14 @@ const releases = defineCollection({
     cover: z.string().optional(),
     releaseDate: z.coerce.date().optional(),
     featured: z.boolean().default(false),
+    links: z.array(z.object({
+      label: z.string(),
+      url: z.string().url(),
+    })).default([]),
+    goodLivingTeam: z.array(z.object({
+      name: z.string(),
+      roles: z.array(z.string()),
+    })).default([]),
   }),
 });
 
@@ -43,6 +65,7 @@ const pages = defineCollection({
 
 export const collections = {
   artists,
+  team,
   releases,
   pages,
 };

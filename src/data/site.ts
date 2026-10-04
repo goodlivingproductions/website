@@ -7,8 +7,8 @@ export const site = {
 
   navigation: [
     {
-      label: 'Work',
-      href: '/work/',
+      label: 'Listen',
+      href: '/listen/',
     },
     {
       label: 'Education',
@@ -25,7 +25,7 @@ export const site = {
   ],
 
   contact: {
-    email: '',
+    email: 'hello@goodliving.productions',
   },
 
   social: {

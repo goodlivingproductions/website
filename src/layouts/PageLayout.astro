@@ -4,6 +4,37 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 
+const subtleSlide = {
+  forwards: {
+    old: {
+      name: 'page-exit',
+      duration: '150ms',
+      easing: 'ease-out',
+      fillMode: 'both',
+    },
+    new: {
+      name: 'page-enter',
+      duration: '280ms',
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      fillMode: 'both',
+    },
+  },
+  backwards: {
+    old: {
+      name: 'page-exit-reverse',
+      duration: '150ms',
+      easing: 'ease-out',
+      fillMode: 'both',
+    },
+    new: {
+      name: 'page-enter-reverse',
+      duration: '280ms',
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      fillMode: 'both',
+    },
+  },
+};
+
 interface Props {
   title: string;
   description?: string;
@@ -21,7 +52,7 @@ const {
   <div class="site-shell">
     <Header />
 
-    <main>
+    <main transition:animate={subtleSlide}>
       <slot />
     </main>
 

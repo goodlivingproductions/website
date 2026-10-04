@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
@@ -44,6 +45,8 @@ const ogImage = image
     <meta name="twitter:description" content={description} />
 
     {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    <ClientRouter />
 
     <slot name="head" />
   </head>

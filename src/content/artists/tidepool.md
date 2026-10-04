@@ -1,7 +1,7 @@
 ---
-name: "Tyler Dunnington"
-description: "Tyler Dunnington is a singer and songwriter whose music centers on faith, worship, and honest storytelling."
-image: "/images/artists/tyler-dunnington.jpg"
+name: "Tidepool"
+description: ""
+image: "/images/artists/tidepool.jpg"
 featured: true
 ---
 
