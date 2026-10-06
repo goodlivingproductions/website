@@ -1,8 +1,10 @@
 ---
 title: "Good Plans"
 artist: "Tyler Dunnington"
+artistId: "tyler-dunnington"
 description: "Tyler Dunnington's debut single, a cover of Good Plans by Red Rocks Worship and Cody Carnes."
 cover: "/images/releases/good-plans.png"
+socialImage: "/images/social/release-good-plans.png"
 releaseDate: 2025-09-12
 featured: true
 links:

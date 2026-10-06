@@ -3,7 +3,7 @@ export const site = {
   shortName: 'Good Living',
   url: 'https://goodliving.productions',
   description: 'Good Living Productions works with artists and musicians to bring ideas to life, from the studio to the stage.',
-  defaultSocialImage: '/images/artists/ethan-needham.png',
+  defaultSocialImage: '/images/social/good-living-home.png',
   contact: {
     email: 'hello@goodliving.productions',
   },

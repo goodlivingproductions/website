@@ -44,7 +44,8 @@ const initials = member.data.name
 <PageLayout
   title={`${member.data.name} — Production Team`}
   description={member.data.description ?? `${member.data.name} works with Good Living Productions.`}
-  image={member.data.image}
+  image={member.data.socialImage ?? member.data.image}
+  imageAlt={`${member.data.name} portrait`}
 >
   <article class="team-page">
     <section class="team-profile">
@@ -69,6 +70,23 @@ const initials = member.data.name
             <a class="profile-link" href={member.data.geniusUrl} target="_blank" rel="noopener noreferrer">
               Genius <span aria-hidden="true">↗</span>
             </a>
+          )}
+
+          {member.data.instagramUrl && (
+            <a class="profile-link" href={member.data.instagramUrl} target="_blank" rel="noopener noreferrer">
+              Instagram <span aria-hidden="true">↗</span>
+            </a>
+          )}
+
+          {member.id === 'ethan-needham' && (
+            <div class="profile-links">
+              <a class="profile-link" href="https://ethanneedham.com" target="_blank" rel="noopener noreferrer">
+                Website <span aria-hidden="true">↗</span>
+              </a>
+              <a class="profile-link" href="/artists/ethan-needham/">
+                Artist profile <span aria-hidden="true">↗</span>
+              </a>
+            </div>
           )}
 
           {roles.length > 0 && (
@@ -178,6 +196,12 @@ const initials = member.data.name
   .description {
     max-width: 620px;
     margin-bottom: 1.5rem;
+  }
+
+  .profile-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
   }
 
   .profile-link {

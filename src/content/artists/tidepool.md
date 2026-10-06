@@ -1,20 +1,13 @@
 ---
 name: "Tidepool"
-description: ""
+schemaType: "MusicGroup"
+description: "Tidepool is a music group featured by Good Living Productions. Follow the band on Instagram for updates and new music."
 image: "/images/artists/tidepool.jpg"
+socialImage: "/images/social/artist-tidepool.png"
+instagramUrl: "https://www.instagram.com/tidepoolband/"
 featured: true
 ---
 
 ## About
 
-Tyler Dunnington is a singer and songwriter from San Diego with roots in Christian and contemporary music. Growing up playing lead roles in both worship and secular groups, he found his voice inspired by artists such as Brandon Lake, Switchfoot, and Zach Bryan. 
-
-### Good Living Productions
-
-Good Living Productions worked with Tyler on his debut single, "Good Plans," released September 12, 2025.
-
-### Releases
-
-### Good Plans
-
-Tyler's debut single, released through Good Living Productions.
+Tidepool is a music group on the Good Living Productions artist roster. Follow Tidepool on Instagram for updates and new music.

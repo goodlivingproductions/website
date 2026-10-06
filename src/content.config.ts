@@ -11,6 +11,9 @@ const artists = defineCollection({
     name: z.string(),
     description: z.string(),
     image: z.string().optional(),
+    socialImage: z.string().optional(),
+    schemaType: z.enum(['Person', 'MusicGroup']).default('Person'),
+    instagramUrl: z.string().url().optional(),
     featured: z.boolean().default(false),
   }),
 });
@@ -24,7 +27,9 @@ const team = defineCollection({
     name: z.string(),
     description: z.string().optional(),
     image: z.string().optional(),
+    socialImage: z.string().optional(),
     geniusUrl: z.string().url().optional(),
+    instagramUrl: z.string().url().optional(),
     featured: z.boolean().default(false),
   }),
 });
@@ -37,8 +42,10 @@ const releases = defineCollection({
   schema: z.object({
     title: z.string(),
     artist: z.string(),
+    artistId: z.string().optional(),
     description: z.string(),
     cover: z.string().optional(),
+    socialImage: z.string().optional(),
     releaseDate: z.coerce.date().optional(),
     featured: z.boolean().default(false),
     links: z.array(z.object({

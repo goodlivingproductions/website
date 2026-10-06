@@ -3,6 +3,7 @@ title: "Soundwaves"
 artist: "Isor"
 description: "Soundwaves by Isor, produced and mixed by Matthew Needham."
 cover: "/images/releases/soundwaves.jpg"
+socialImage: "/images/social/release-soundwaves.png"
 releaseDate: 2015-08-16
 featured: true
 links:
@@ -15,14 +16,12 @@ goodLivingTeam:
 
 ## About
 
-"Good Plans" is Tyler Dunnington's debut single, released September 12, 2025.
-
-Originally written and recorded by Red Rocks Worship and Cody Carnes, the song draws from Psalm 23 and centers on trusting God's goodness through every season.
+"Soundwaves" is a single by Isor, released August 16, 2015. The track was produced and mixed by Matthew Needham.
 
 ## Credits
 
 - Artist: Isor
-- Production: Matthew Needham
+- Producer and mixing engineer: Matthew Needham
 
 ## Listen
 

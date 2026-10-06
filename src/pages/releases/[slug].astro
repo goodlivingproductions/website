@@ -1,17 +1,24 @@
 ---
 import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
+import { site } from '../../data/site.mjs';
 
 export async function getStaticPaths() {
-  const releases = await getCollection('releases');
+  const [releases, artists] = await Promise.all([
+    getCollection('releases'),
+    getCollection('artists'),
+  ]);
 
   return releases.map((release) => ({
     params: { slug: release.id },
-    props: { release },
+    props: {
+      release,
+      artistProfile: artists.find((artist) => artist.id === release.data.artistId),
+    },
   }));
 }
 
-const { release } = Astro.props;
+const { release, artistProfile } = Astro.props;
 const teamProfiles = await getCollection('team');
 
 const {
@@ -22,7 +29,27 @@ const {
   releaseDate,
   links,
   goodLivingTeam,
+  socialImage,
 } = release.data;
+const releaseUrl = new URL(`/releases/${release.id}/`, site.url).href;
+const releaseStructuredData = {
+  '@type': 'MusicRecording',
+  '@id': `${releaseUrl}#recording`,
+  name: title,
+  description,
+  url: releaseUrl,
+  ...(cover ? { image: new URL(cover, site.url).href } : {}),
+  ...(releaseDate ? { datePublished: releaseDate.toISOString().slice(0, 10) } : {}),
+  byArtist: artistProfile
+    ? {
+        '@type': artistProfile.data.schemaType,
+        '@id': new URL(`/artists/${artistProfile.id}/#artist`, site.url).href,
+        name: artistProfile.data.name,
+        url: new URL(`/artists/${artistProfile.id}/`, site.url).href,
+      }
+    : { '@type': 'Person', name: artist },
+  ...(links.length ? { sameAs: links.map((link) => link.url) } : {}),
+};
 
 const linkedTeam = goodLivingTeam.map((member) => ({
   ...member,
@@ -41,7 +68,10 @@ const formattedDate = releaseDate
 <PageLayout
   title={`${title} — ${artist}`}
   description={description}
-  image={cover}
+  image={socialImage ?? cover}
+  imageAlt={`${title} cover artwork`}
+  openGraphType="music.song"
+  structuredData={releaseStructuredData}
 >
   <article class="release-page">
     <section class="release-overview">

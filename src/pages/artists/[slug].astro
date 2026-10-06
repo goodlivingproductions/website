@@ -1,30 +1,62 @@
 ---
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
+import ReleaseCard from '../../components/ReleaseCard.astro';
+import { site } from '../../data/site.mjs';
 
 export async function getStaticPaths() {
-  const artists = await getCollection('artists');
+  const [artists, releases] = await Promise.all([
+    getCollection('artists'),
+    getCollection('releases'),
+  ]);
 
   return artists.map((artist) => ({
     params: { slug: artist.id },
-    props: { artist },
+    props: {
+      artist,
+      releases: releases
+        .filter((release) => release.data.artistId === artist.id)
+        .sort((a, b) => (b.data.releaseDate?.getTime() ?? 0) - (a.data.releaseDate?.getTime() ?? 0)),
+    },
   }));
 }
 
-const { artist } = Astro.props;
+const { artist, releases } = Astro.props;
 const { Content } = await render(artist);
 
 const {
   name,
   description,
   image,
+  socialImage,
+  schemaType,
+  instagramUrl,
 } = artist.data;
+const artistUrl = new URL(`/artists/${artist.id}/`, site.url).href;
+const artistStructuredData = {
+  '@type': 'ProfilePage',
+  '@id': `${artistUrl}#profile`,
+  url: artistUrl,
+  name: `${name} | ${site.shortName}`,
+  mainEntity: {
+    '@type': schemaType,
+    '@id': `${artistUrl}#artist`,
+    name,
+    description,
+    url: artistUrl,
+    ...(image ? { image: new URL(image, site.url).href } : {}),
+    ...(instagramUrl ? { sameAs: [instagramUrl] } : {}),
+  },
+};
 ---
 
 <PageLayout
   title={name}
   description={description}
-  image={image}
+  image={socialImage ?? image}
+  imageAlt={`${name} artist portrait`}
+  openGraphType="profile"
+  structuredData={artistStructuredData}
 >
   <article class="artist-page">
     <section class="artist-header">
@@ -46,6 +78,12 @@ const {
           <p class="description">
             {description}
           </p>
+
+          {instagramUrl && (
+            <a class="artist-social-link" href={instagramUrl} target="_blank" rel="noopener noreferrer">
+              Instagram <span aria-hidden="true">↗</span>
+            </a>
+          )}
         </div>
       </div>
     </section>
@@ -55,6 +93,15 @@ const {
         <div class="content">
           <Content />
         </div>
+
+        {releases.length > 0 && (
+          <section class="artist-releases" aria-labelledby="artist-releases-heading">
+            <h2 id="artist-releases-heading">Selected releases</h2>
+            <div class="release-grid">
+              {releases.map((release) => <ReleaseCard release={release} />)}
+            </div>
+          </section>
+        )}
       </div>
     </section>
   </article>
@@ -105,6 +152,16 @@ const {
     font-size: 1.2rem;
   }
 
+  .artist-social-link {
+    display: inline-flex;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+    font-size: 0.9rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
   .artist-content {
     padding-block: 6rem 8rem;
   }
@@ -113,6 +170,29 @@ const {
     display: grid;
     grid-template-columns: minmax(0, 800px);
     justify-content: center;
+  }
+
+  .artist-releases {
+    margin-top: 4rem;
+  }
+
+  .artist-releases h2 {
+    margin-bottom: 1.5rem;
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 500;
+  }
+
+  .release-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 750px) {
+    .release-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
   }
 
   .content :global(h2) {

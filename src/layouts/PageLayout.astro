@@ -39,17 +39,30 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  imageAlt?: string;
+  openGraphType?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title,
   description = site.description,
   image,
+  imageAlt,
+  openGraphType,
+  structuredData,
 } = Astro.props;
 const documentTitle = title === site.name ? title : `${title} | ${site.shortName}`;
 ---
 
-<BaseLayout title={documentTitle} description={description} image={image}>
+<BaseLayout
+  title={documentTitle}
+  description={description}
+  image={image}
+  imageAlt={imageAlt}
+  openGraphType={openGraphType}
+  structuredData={structuredData}
+>
   <div class="site-shell">
     <Header />
 
