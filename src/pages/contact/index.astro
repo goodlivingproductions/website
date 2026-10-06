@@ -1,13 +1,17 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
-import { site } from '../../data/site';
+import { site } from '../../data/site.mjs';
 
-const contact = await getEntry('pages', 'contact');
+const [contact, services] = await Promise.all([
+  getEntry('pages', 'contact'),
+  getCollection('services'),
+]);
 
-if (!contact) {
-  throw new Error('Contact page content could not be found.');
-}
+if (!contact) throw new Error('Contact page content could not be found.');
+const copy = contact.data.contact;
+if (!copy) throw new Error('Contact page section labels could not be found.');
+const sortedServices = services.sort((a, b) => a.data.order - b.data.order);
 
 ---
 
@@ -18,7 +22,7 @@ if (!contact) {
   <section class="contact-content">
     <div class="container contact-grid">
       <div class="contact-primary">
-        <p class="eyebrow">Start a conversation</p>
+        <p class="eyebrow">{copy.emailEyebrow}</p>
         <a class="email" href={`mailto:${site.contact.email}`}>
           {site.contact.email}<span aria-hidden="true"> ↗</span>
         </a>
@@ -26,20 +30,14 @@ if (!contact) {
 
       <div class="contact-details">
         <div>
-          <h2>Services</h2>
-          <ul>
-            <li>Music Production</li>
-            <li>Mixing &amp; Mastering</li>
-            <li>Live Sound</li>
-            <li>Music Lessons</li>
-            <li>Consulting</li>
-          </ul>
+          <h2>{copy.servicesHeading}</h2>
+          <ul>{sortedServices.map((service) => <li><a href={`/services/${service.id}/`}>{service.data.name}</a></li>)}</ul>
         </div>
 
         <div>
-          <h2>Education</h2>
-          <p>Looking to book a lesson or consultation?</p>
-          <a class="education-link" href="/education/">View Education →</a>
+          <h2>{copy.educationHeading}</h2>
+          <p>{copy.educationDescription}</p>
+          <a class="education-link" href="/education/">{copy.educationLinkLabel}</a>
         </div>
       </div>
     </div>
@@ -108,6 +106,15 @@ if (!contact) {
     border-bottom: 1px solid var(--color-border);
     color: var(--color-text-muted);
     font-size: 0.9rem;
+  }
+
+  .contact-details li a {
+    display: block;
+    color: inherit;
+  }
+
+  .contact-details li a:hover {
+    color: var(--color-text);
   }
 
   .contact-details p {

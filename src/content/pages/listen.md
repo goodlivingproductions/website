@@ -1,22 +1,11 @@
 ---
 title: "Listen"
 description: "Selected music, productions, releases, and live projects from Good Living Productions."
+listen:
+  releasesTitle: "Selected releases"
+  artistsTitle: "Artists"
+  teamTitle: "Production Team"
+  releasesEmpty: "Releases will be added here soon."
+  artistsEmpty: "Artist profiles will be added here soon."
+  teamEmpty: "Project team credits will appear here."
 ---
-
-## Introduction
-
-A selection of productions, recordings, releases, and live projects from Good Living Productions.
-
-## Releases
-
-Explore music released through Good Living Productions, including productions, recordings, and collaborations with artists.
-
-## Live Projects
-
-Good Living Productions also works in live performance, including live mixing, playback, and production support.
-
-## Productions
-
-From initial ideas and arrangements through recording, production, and mixing, we help develop projects from concept to finished music.
-
-More releases will be added here as the catalog grows.

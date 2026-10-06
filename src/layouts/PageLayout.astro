@@ -2,7 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site } from '../data/site';
+import { site } from '../data/site.mjs';
 
 const subtleSlide = {
   forwards: {
@@ -46,9 +46,10 @@ const {
   description = site.description,
   image,
 } = Astro.props;
+const documentTitle = title === site.name ? title : `${title} | ${site.shortName}`;
 ---
 
-<BaseLayout title={`${title} — ${site.name}`} description={description} image={image}>
+<BaseLayout title={documentTitle} description={description} image={image}>
   <div class="site-shell">
     <Header />
 

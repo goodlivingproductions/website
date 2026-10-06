@@ -1,13 +1,18 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 
-const education = await getEntry('pages', 'education');
+const [education, services] = await Promise.all([
+  getEntry('pages', 'education'),
+  getCollection('services'),
+]);
 
-if (!education) {
-  throw new Error('Education page content could not be found.');
-}
-
+if (!education) throw new Error('Education page content could not be found.');
+const copy = education.data.education;
+if (!copy) throw new Error('Education page presentation data could not be found.');
+const educationAreas = services
+  .sort((a, b) => a.data.order - b.data.order)
+  .flatMap((service) => service.data.educationAreas);
 const { Content } = await render(education);
 ---
 
@@ -17,9 +22,9 @@ const { Content } = await render(education);
 >
   <section class="page-header">
     <div class="container">
-      <p class="eyebrow">Education</p>
+      <p class="eyebrow">{copy.eyebrow}</p>
 
-      <h1>Learn the craft. Build your sound.</h1>
+      <h1>{copy.heading}</h1>
 
       <div class="intro">
         <Content />
@@ -30,69 +35,18 @@ const { Content } = await render(education);
   <section class="lesson-section">
     <div class="container">
       <div class="section-heading">
-        <p class="eyebrow">Lessons &amp; Consulting</p>
-        <h2>Choose your focus.</h2>
+        <p class="eyebrow">{copy.lessonsEyebrow}</p>
+        <h2>{copy.lessonsHeading}</h2>
       </div>
 
       <div class="lesson-grid">
-        <article class="lesson">
-          <span class="number">01</span>
-          <h3>Guitar</h3>
-          <p>
-            Technique, musicianship, songwriting, tone, and practical playing.
-          </p>
-        </article>
-
-        <article class="lesson">
-          <span class="number">02</span>
-          <h3>Bass</h3>
-          <p>
-            Groove, technique, theory, tone, and playing within an ensemble.
-          </p>
-        </article>
-
-        <article class="lesson">
-          <span class="number">03</span>
-          <h3>Drums</h3>
-          <p>
-            Fundamentals, groove, coordination, dynamics, and musicality.
-          </p>
-        </article>
-
-        <article class="lesson">
-          <span class="number">04</span>
-          <h3>Piano / Keys</h3>
-          <p>
-            Chords, harmony, accompaniment, songwriting, and practical
-            keyboard skills.
-          </p>
-        </article>
-
-        <article class="lesson">
-          <span class="number">05</span>
-          <h3>Singing</h3>
-          <p>
-            Technique, musicianship, performance, vocal development, and
-            healthy practice.
-          </p>
-        </article>
-
-        <article class="lesson">
-          <span class="number">06</span>
-          <h3>Production &amp; Mixing</h3>
-          <p>
-            Recording, arrangement, production, mixing, effects, and workflow.
-          </p>
-        </article>
-
-        <article class="lesson">
-          <span class="number">07</span>
-          <h3>Consultation</h3>
-          <p>
-            One-on-one guidance for artists, musicians, producers, and
-            developing projects.
-          </p>
-        </article>
+        {educationAreas.map((area, index) => (
+          <article class="lesson">
+            <span class="number">{String(index + 1).padStart(2, '0')}</span>
+            <h3>{area.name}</h3>
+            <p>{area.description}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -100,18 +54,14 @@ const { Content } = await render(education);
   <section class="booking">
     <div class="container booking-inner">
       <div>
-        <p class="eyebrow">Book a Session</p>
-        <h2>Let's get to work.</h2>
-        <p>
-          Choose a lesson or consultation time that works for you.
-        </p>
+        <p class="eyebrow">{copy.bookingEyebrow}</p>
+        <h2>{copy.bookingHeading}</h2>
+        <p>{copy.bookingDescription}</p>
       </div>
 
       <div class="booking-placeholder">
-        <p>Square Booking Embed</p>
-        <span>
-          The booking calendar will be placed here.
-        </span>
+        <p>{copy.bookingPlaceholderHeading}</p>
+        <span>{copy.bookingPlaceholderDescription}</span>
       </div>
     </div>
   </section>

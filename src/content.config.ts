@@ -59,7 +59,55 @@ const pages = defineCollection({
   }),
   schema: z.object({
     title: z.string(),
+    description: z.string().optional(),
+    home: z.object({
+      eyebrow: z.string(),
+      heading: z.string(),
+      ctaLabel: z.string(),
+      ctaHref: z.string(),
+    }).optional(),
+    listen: z.object({
+      releasesTitle: z.string(),
+      artistsTitle: z.string(),
+      teamTitle: z.string(),
+      releasesEmpty: z.string(),
+      artistsEmpty: z.string(),
+      teamEmpty: z.string(),
+    }).optional(),
+    contact: z.object({
+      emailEyebrow: z.string(),
+      servicesHeading: z.string(),
+      educationHeading: z.string(),
+      educationDescription: z.string(),
+      educationLinkLabel: z.string(),
+    }).optional(),
+    education: z.object({
+      eyebrow: z.string(),
+      heading: z.string(),
+      lessonsEyebrow: z.string(),
+      lessonsHeading: z.string(),
+      bookingEyebrow: z.string(),
+      bookingHeading: z.string(),
+      bookingDescription: z.string(),
+      bookingPlaceholderHeading: z.string(),
+      bookingPlaceholderDescription: z.string(),
+    }).optional(),
+  }),
+});
+
+const services = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/services',
+  }),
+  schema: z.object({
+    name: z.string(),
     description: z.string(),
+    order: z.number().int().nonnegative(),
+    educationAreas: z.array(z.object({
+      name: z.string(),
+      description: z.string(),
+    })).default([]),
   }),
 });
 
@@ -68,4 +116,5 @@ export const collections = {
   team,
   releases,
   pages,
+  services,
 };

@@ -7,6 +7,8 @@ const listen = await getEntry('pages', 'listen');
 if (!listen) {
   throw new Error('Listen page content could not be found.');
 }
+const copy = listen.data.listen;
+if (!copy) throw new Error('Listen page section labels could not be found.');
 
 const [releases, artists, team] = await Promise.all([
   getCollection('releases'),
@@ -62,7 +64,7 @@ const productionTeam = team
   <div class="portfolio-rows container">
     <section class="portfolio-row releases">
       <div class="portfolio-row-heading">
-        <h2>Selected releases</h2>
+        <h2>{copy.releasesTitle}</h2>
       </div>
 
       {sortedReleases.length > 0 ? (
@@ -91,15 +93,13 @@ const productionTeam = team
           ))}
         </div>
       ) : (
-        <p class="empty-state">
-          Releases will be added here soon.
-        </p>
+        <p class="empty-state">{copy.releasesEmpty}</p>
       )}
     </section>
 
     <section class="portfolio-row artists">
       <div class="portfolio-row-heading">
-        <h2>Artists</h2>
+        <h2>{copy.artistsTitle}</h2>
       </div>
 
       {sortedArtists.length > 0 ? (
@@ -125,13 +125,13 @@ const productionTeam = team
           ))}
         </div>
       ) : (
-        <p class="empty-state">Artist profiles will be added here soon.</p>
+        <p class="empty-state">{copy.artistsEmpty}</p>
       )}
     </section>
 
     <section class="portfolio-row production-team">
       <div class="portfolio-row-heading">
-        <h2>Production Team</h2>
+        <h2>{copy.teamTitle}</h2>
       </div>
 
       {productionTeam.length > 0 ? (
@@ -155,7 +155,7 @@ const productionTeam = team
           ))}
         </div>
       ) : (
-        <p class="empty-state">Project team credits will appear here.</p>
+        <p class="empty-state">{copy.teamEmpty}</p>
       )}
     </section>
   </div>

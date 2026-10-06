@@ -9,6 +9,8 @@ if (!home) {
 }
 
 const { Content } = await render(home);
+const hero = home.data.home;
+if (!hero) throw new Error('Home page presentation data could not be found.');
 ---
 
 <PageLayout
@@ -17,16 +19,16 @@ const { Content } = await render(home);
 >
   <section class="hero">
     <div class="container hero-inner">
-      <p class="eyebrow">Good Living Productions</p>
+      <p class="eyebrow">{hero.eyebrow}</p>
 
-      <h1>Good Music, Good Living</h1>
+      <h1>{hero.heading}</h1>
 
       <div class="intro">
         <Content />
       </div>
 
-      <a class="button" href="/listen/">
-        Listen Now
+      <a class="button" href={hero.ctaHref}>
+        {hero.ctaLabel}
       </a>
     </div>
   </section>

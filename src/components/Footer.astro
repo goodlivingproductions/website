@@ -1,5 +1,5 @@
 ---
-import { site } from '../data/site';
+import { site } from '../data/site.mjs';
 
 const year = new Date().getFullYear();
 ---
@@ -18,23 +18,6 @@ const year = new Date().getFullYear();
         </a>
       )}
 
-      {site.social.instagram && (
-        <a href={site.social.instagram} target="_blank" rel="noopener noreferrer">
-          Instagram
-        </a>
-      )}
-
-      {site.social.youtube && (
-        <a href={site.social.youtube} target="_blank" rel="noopener noreferrer">
-          YouTube
-        </a>
-      )}
-
-      {site.social.spotify && (
-        <a href={site.social.spotify} target="_blank" rel="noopener noreferrer">
-          Spotify
-        </a>
-      )}
     </div>
 
     <p class="copyright">
